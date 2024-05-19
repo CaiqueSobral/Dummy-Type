@@ -31,6 +31,12 @@
       "recommended": true,
       "complexity": {
         "noForEach": "warn"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
       }
     }
   }
