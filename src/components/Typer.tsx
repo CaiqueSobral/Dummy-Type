@@ -3,6 +3,7 @@
 import { generateWord } from '@/util/generateWords'
 import { useEffect, useState } from 'react'
 import RenderLetter from './LetterComponent'
+import type { colorType } from '@/types/color'
 
 export default function Typer() {
   const [typed, setTyped] = useState<Array<boolean>>([])
@@ -75,46 +76,32 @@ export default function Typer() {
   })
 
   const showPipe = (index: number) => {
-    return actualLetter === word.length || index === actualLetter
+    return index === actualLetter
+  }
+
+  const renderLetter = (i: number, letter: string) => {
+    let color: colorType = 'wrong'
+    if (i >= typed.length) color = 'neutral'
+    if (i < typed.length && typed[i]) color = 'hit'
+
+    return (
+      <RenderLetter
+        key={i}
+        color={color}
+        letter={letter}
+        showPipe={showPipe(i)}
+      />
+    )
   }
 
   return (
     <main className="h-screen w-screen flex flex-col items-center justify-center p-16 bg-primary">
       <div
-        className="max-w-full grid gap-1 relative"
-        style={{
-          gridTemplateColumns: 'repeat(auto-fit, 15px)',
-        }}
+        className="max-w-full grid justify-center gap-1 relative"
+        style={{ gridTemplateColumns: 'repeat(auto-fit, 15px)' }}
       >
         {word.map((letter, i) => {
-          if (i >= typed.length)
-            return (
-              <RenderLetter
-                key={i}
-                color="neutral"
-                letter={letter}
-                showPipe={showPipe(i)}
-              />
-            )
-
-          if (i < typed.length && typed[i])
-            return (
-              <RenderLetter
-                key={i}
-                color="hit"
-                letter={letter}
-                showPipe={showPipe(i)}
-              />
-            )
-
-          return (
-            <RenderLetter
-              key={i}
-              color="wrong"
-              letter={letter}
-              showPipe={showPipe(i)}
-            />
-          )
+          return renderLetter(i, letter)
         })}
       </div>
     </main>

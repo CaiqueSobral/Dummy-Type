@@ -1,8 +1,9 @@
+import type { colorType } from '@/types/color'
 import Pipe from './PipeComponent'
 
 type Props = {
   letter: string
-  color: 'neutral' | 'hit' | 'wrong'
+  color: colorType
   showPipe: boolean
 }
 
@@ -17,7 +18,7 @@ export default function RenderLetter(props: Props) {
   return (
     <span
       className={
-        'w-[15px] font-mono font-medium text-[24px] relative flex items-center'
+        'w-[15px] col-span-1 font-mono font-medium text-[24px] relative flex items-center'
       }
       style={{ color: color }}
     >
