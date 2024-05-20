@@ -1,6 +1,9 @@
+import Pipe from './PipeComponent'
+
 type Props = {
   letter: string
   color: 'neutral' | 'hit' | 'wrong'
+  showPipe: boolean
 }
 
 function colorMapper(color: string) {
@@ -13,7 +16,9 @@ export default function RenderLetter(props: Props) {
   const color = colorMapper(props.color)
   return (
     <span
-      className={'w-[15px] font-mono font-medium text-[24px]'}
+      className={
+        'w-[15px] font-mono font-medium text-[24px] relative flex items-center'
+      }
       style={{ color: color }}
     >
       {props.letter === ' ' ? (
@@ -25,6 +30,7 @@ export default function RenderLetter(props: Props) {
       ) : (
         props.letter
       )}
+      {props.showPipe && <Pipe />}
     </span>
   )
 }

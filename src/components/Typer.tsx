@@ -3,7 +3,6 @@
 import { generateWord } from '@/util/generateWords'
 import { useEffect, useState } from 'react'
 import RenderLetter from './LetterComponent'
-import Pipe from './PipeComponent'
 
 export default function Typer() {
   const [typed, setTyped] = useState<Array<boolean>>([])
@@ -25,8 +24,6 @@ export default function Typer() {
   const pushTyped = (newValue: boolean) => {
     setTyped((prev) => {
       increaseActualLetter()
-      console.log(`Actual Index: ${actualLetter}`)
-      console.log(`Letter with this index: ${word[actualLetter]}`)
       return [...prev, newValue]
     })
   }
@@ -35,7 +32,6 @@ export default function Typer() {
     if (!typed.length) return
     setTyped((prev) => {
       decreaseActualLetter()
-      console.log(`Actual Index: ${actualLetter}`)
       const prevArray = [...prev]
       prevArray.pop()
       return prevArray
@@ -49,7 +45,6 @@ export default function Typer() {
 
   const keyDownHandler = (e: KeyboardEvent) => {
     const letter = e.key.toLowerCase()
-    console.log(`Letter pressed: ${letter}`)
 
     if (letter !== 'backspace' && letter !== ' ' && !isLetter(letter)) {
       return console.log('Invalid Input')
@@ -79,22 +74,48 @@ export default function Typer() {
     }
   })
 
+  const showPipe = (index: number) => {
+    return actualLetter === word.length || index === actualLetter
+  }
+
   return (
-    <main className="h-screen w-screen flex flex-col items-center justify-center p-8 bg-primary">
-      <div className="max-w-full flex items-center justify-center gap-1 relative">
+    <main className="h-screen w-screen flex flex-col items-center justify-center p-16 bg-primary">
+      <div
+        className="max-w-full grid gap-1 relative"
+        style={{
+          gridTemplateColumns: 'repeat(auto-fit, 15px)',
+        }}
+      >
         {word.map((letter, i) => {
           if (i >= typed.length)
-            return <RenderLetter key={i} color="neutral" letter={letter} />
+            return (
+              <RenderLetter
+                key={i}
+                color="neutral"
+                letter={letter}
+                showPipe={showPipe(i)}
+              />
+            )
 
           if (i < typed.length && typed[i])
-            return <RenderLetter key={i} color="hit" letter={letter} />
+            return (
+              <RenderLetter
+                key={i}
+                color="hit"
+                letter={letter}
+                showPipe={showPipe(i)}
+              />
+            )
 
-          return <RenderLetter key={i} color="wrong" letter={letter} />
+          return (
+            <RenderLetter
+              key={i}
+              color="wrong"
+              letter={letter}
+              showPipe={showPipe(i)}
+            />
+          )
         })}
-        <Pipe
-          index={actualLetter}
-          className={'h-4 w-[1px] bg-neutral-300 animate-ping absolute'}
-        />
       </div>
     </main>
   )

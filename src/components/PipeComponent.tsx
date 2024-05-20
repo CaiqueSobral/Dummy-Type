@@ -1,15 +1,3 @@
-type Props = {
-  className: string
-  index: number
-}
-
-export default function Pipe(props: Props) {
-  return (
-    <div
-      className={props.className}
-      style={{
-        left: props.index * 15 + 4 * props.index,
-      }}
-    />
-  )
+export default function Pipe() {
+  return <div className="h-4 w-[1px] bg-neutral-300 animate-ping absolute" />
 }
