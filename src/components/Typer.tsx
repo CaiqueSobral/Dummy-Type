@@ -80,16 +80,16 @@ export default function Typer() {
   })
 
   return (
-    <main className="h-screen w-screen flex flex-col items-center justify-center p-8 bg-neutral-700">
-      <div className="h-full max-w-full flex items-center justify-center -mt-24 gap-1 relative">
+    <main className="h-screen w-screen flex flex-col items-center justify-center p-8 bg-primary">
+      <div className="max-w-full flex items-center justify-center gap-1 relative">
         {word.map((letter, i) => {
           if (i >= typed.length)
             return <RenderLetter key={i} color="neutral" letter={letter} />
 
           if (i < typed.length && typed[i])
-            return <RenderLetter key={i} color="green" letter={letter} />
+            return <RenderLetter key={i} color="hit" letter={letter} />
 
-          return <RenderLetter key={i} color="red" letter={letter} />
+          return <RenderLetter key={i} color="wrong" letter={letter} />
         })}
         <Pipe
           index={actualLetter}

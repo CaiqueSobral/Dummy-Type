@@ -1,12 +1,12 @@
 type Props = {
   letter: string
-  color: 'neutral' | 'green' | 'red'
+  color: 'neutral' | 'hit' | 'wrong'
 }
 
 function colorMapper(color: string) {
-  if (color === 'neutral') return '#d4d4d4'
-  if (color === 'green') return '#86efac'
-  return '#fca5a5'
+  if (color === 'neutral') return '#646669'
+  if (color === 'hit') return '#d4d4d4'
+  return '#f87171'
 }
 
 export default function RenderLetter(props: Props) {
@@ -17,7 +17,7 @@ export default function RenderLetter(props: Props) {
       style={{ color: color }}
     >
       {props.letter === ' ' ? (
-        props.color === 'red' ? (
+        props.color === 'wrong' ? (
           '_'
         ) : (
           <span className="w-[15px]">&nbsp;</span>

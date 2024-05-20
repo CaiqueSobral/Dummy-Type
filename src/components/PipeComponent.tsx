@@ -8,7 +8,7 @@ export default function Pipe(props: Props) {
     <div
       className={props.className}
       style={{
-        left: props.index * 15 + (props.index === 0 ? -4 : 4 * props.index),
+        left: props.index * 15 + 4 * props.index,
       }}
     />
   )
