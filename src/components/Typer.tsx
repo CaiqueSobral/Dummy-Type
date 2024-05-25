@@ -1,14 +1,21 @@
 'use client'
 
-import { generateWord } from '@/util/generateWords'
 import { useEffect, useState } from 'react'
 import RenderLetter from './LetterComponent'
 import type { colorType } from '@/types/color'
+import { generateQuote } from '@/util/generateQuote'
 
 export default function Typer() {
   const [typed, setTyped] = useState<Array<boolean>>([])
   const [actualLetter, setActualLetter] = useState<number>(0)
-  const word = generateWord().toLowerCase().split('')
+  const [quote, setQuote] = useState<Array<string>>([])
+  const [words, setWords] = useState<Array<string>>([])
+
+  const setRandomQuote = async () => {
+    const randomQuote = await generateQuote()
+    setQuote(randomQuote.toLowerCase().split(''))
+    setWords(randomQuote.toLowerCase().split(' '))
+  }
 
   const increaseActualLetter = () => {
     setActualLetter((prev) => {
@@ -51,8 +58,8 @@ export default function Typer() {
       return console.log('Invalid Input')
     }
 
-    if (actualLetter === word.length && letter !== 'backspace') {
-      return console.log('End of the word')
+    if (actualLetter === quote.length && letter !== 'backspace') {
+      return console.log('End of the quote')
     }
 
     if (letter === 'backspace') {
@@ -60,24 +67,25 @@ export default function Typer() {
       return popTyped()
     }
 
-    if (letter.toLowerCase() === word[actualLetter]) {
-      console.log(`Actual letter: ${word[actualLetter]}`)
+    if (letter.toLowerCase() === quote[actualLetter]) {
+      console.log(`Actual letter: ${quote[actualLetter]}`)
       return pushTyped(true)
     }
     pushTyped(false)
   }
 
+  const showPipe = (index: number) => {
+    return index === actualLetter
+  }
+
   useEffect(() => {
+    if (!quote.length) setRandomQuote()
     window.addEventListener('keydown', keyDownHandler)
 
     return () => {
       window.removeEventListener('keydown', keyDownHandler)
     }
   })
-
-  const showPipe = (index: number) => {
-    return index === actualLetter
-  }
 
   const renderLetter = (i: number, letter: string) => {
     let color: colorType = 'wrong'
@@ -96,11 +104,8 @@ export default function Typer() {
 
   return (
     <main className="h-screen w-screen flex flex-col items-center justify-center p-16 bg-primary">
-      <div
-        className="max-w-full grid justify-center gap-1 relative"
-        style={{ gridTemplateColumns: 'repeat(auto-fit, 15px)' }}
-      >
-        {word.map((letter, i) => {
+      <div className="max-w-full grid gap-1 relative grid-cols-[repeat(auto-fit,15px)]">
+        {quote.map((letter, i) => {
           return renderLetter(i, letter)
         })}
       </div>
